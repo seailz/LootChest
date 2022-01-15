@@ -1,0 +1,12 @@
+name: FivooAnarchy
+version: ${project.version}
+main: dev.ioyo.fivooanarchy.FivooAnarchy
+api-version: 1.18
+authors: [ Seailz ]
+description: Fivoo Anarchy Bot
+website: www.seailz.com
+commands:
+  toggleloot:
+    description: Toggle loot chests.
+  togglepvp:
+    description: Toggle pvp.
