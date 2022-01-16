@@ -10,3 +10,11 @@ commands:
     description: Toggle loot chests.
   togglepvp:
     description: Toggle pvp.
+  spawnloot:
+    description: Spawn a loot chest.
+  freload:
+    description: Reload the config
+    aliases: [frl]
+  setitem:
+    description: Sets an item!
+    aliases: [si]
