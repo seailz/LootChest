@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 public final class FivooAnarchy extends JavaPlugin {
 
+    boolean found;
     ItemStack currentitem;
     Location currentbocklocation;
     TextChannel textchannel;
@@ -58,7 +59,7 @@ public final class FivooAnarchy extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        JDABuilder builder = JDABuilder.createDefault("a");
+        JDABuilder builder = JDABuilder.createDefault("");
         try {
             jda = builder.build();
         } catch (LoginException e) {

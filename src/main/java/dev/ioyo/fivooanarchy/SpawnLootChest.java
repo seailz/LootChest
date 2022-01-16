@@ -57,6 +57,7 @@ public class SpawnLootChest implements CommandExecutor, Listener {
             online.sendTitle(ChatColor.WHITE + "" + ChatColor.BOLD + "A LOOT CHEST HAS BEEN" + ChatColor.GREEN + ChatColor.BOLD + " SPAWNED!", "COORDS: x: " + randomLocation.getX() + " y: " + randomLocation.getY() + " z: " + randomLocation.getZ() , 3, 80, 3);
         }
         found = false;
+        plugin.found = false;
         channel = tx;
         plugin.currentbocklocation = randomLocation;
         plugin.textchannel = tx;

@@ -21,6 +21,11 @@ public class ChestOpen implements Listener {
     public void ChestOpen(PlayerInteractEvent e) {
         if (!e.getClickedBlock().getType().equals(Material.CHEST)) return;
         if (!e.getClickedBlock().getLocation().equals(plugin.currentbocklocation)) return;
+        if (e.getPlayer().hasPermission("fivoo.bypasslootchest")) return;
+        if (plugin.found) {
+            e.getPlayer().sendMessage("This loot chest has been found already, hopefully they left something for you!");
+            return;
+        }
         Player p = e.getPlayer();
         Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + p.getName() + ChatColor.WHITE + "" + ChatColor.BOLD + " FOUND THE LOOT CHEST!");
         plugin.textchannel.sendMessage(p.getName() + " found the loot chest!").queue();
