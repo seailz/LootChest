@@ -27,6 +27,7 @@ import java.awt.*;
 
 public class SpawnLootChest implements CommandExecutor, Listener {
 
+    ItemStack item;
     private FivooAnarchy plugin;
     boolean found;
     Location location;
@@ -38,6 +39,9 @@ public class SpawnLootChest implements CommandExecutor, Listener {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
+        plugin.currentitem = null;
+
         if (!plugin.getConfig().getBoolean("LootChestsEnabled")) return true;
 
         if (!sender.hasPermission("fivoo.spawn")) return true;
@@ -67,7 +71,26 @@ public class SpawnLootChest implements CommandExecutor, Listener {
         randomLocation.getBlock().setType(Material.CHEST);
         Chest chest = (Chest)block.getState();
         Inventory inv = chest.getInventory();
-        inv.addItem(plugin.currentitem);
+
+
+        if (plugin.currentitem == null) {
+
+            // loop to print elements at randonm
+            for (int i = 0; i < plugin.possibleitems.size(); i++) {
+                // generating the index using Math.random()
+                int index = (int) (Math.random() * plugin.possibleitems.size());
+                item = plugin.possibleitems.get(index);
+                break;
+            }
+            inv.addItem(item);
+        }
+        else {
+            item = plugin.currentitem;
+            inv.addItem(item);
+
+            item.getItemMeta().setLore(null);
+        }
+
 
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -79,7 +102,7 @@ public class SpawnLootChest implements CommandExecutor, Listener {
                     online.sendMessage("The loot chest has been removed because no-one found it.");
                 }
             }
-        }, 150000L);
+        }, 144000L);
 
 
 

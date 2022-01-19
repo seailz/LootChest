@@ -25,6 +25,8 @@ public class TeleportUtils {
         bad_blocks.add(Material.LAVA);
         bad_blocks.add(Material.FIRE);
         bad_blocks.add(Material.CACTUS);
+        bad_blocks.add(Material.WATER);
+        bad_blocks.add(Material.OAK_LEAVES);
     }
 
     public static Location generateLocation(){

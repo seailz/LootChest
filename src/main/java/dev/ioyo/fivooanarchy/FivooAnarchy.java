@@ -1,4 +1,5 @@
 package dev.ioyo.fivooanarchy;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -10,24 +11,24 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
-import javax.xml.soap.Text;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public final class FivooAnarchy extends JavaPlugin {
 
+
+    ArrayList<ItemStack> possibleitems = new ArrayList<>();
+    ArrayList<ItemStack> possibleitemsconfig = new ArrayList<>();
     boolean found;
     ItemStack currentitem;
     Location currentbocklocation;
     TextChannel textchannel;
-    TextChannel serverstatus;
 
 
     private LootChests ml = new LootChests(this);
@@ -35,6 +36,13 @@ public final class FivooAnarchy extends JavaPlugin {
     public LootChests getML() {
         return ml;
     }
+
+    private whitelist ml68 = new whitelist(this);
+
+    public whitelist getML68() {
+        return ml68;
+    }
+
     private ChestOpen ml3 = new ChestOpen(this);
 
     public ChestOpen getML3() {
@@ -53,15 +61,33 @@ public final class FivooAnarchy extends JavaPlugin {
         return ml12;
     }
 
+    private GUIRotor ml112 = new GUIRotor(this);
+
+    public GUIRotor getML112() {
+        return ml112;
+    }
+
+
 
     JDA jda;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        JDABuilder builder = JDABuilder.createDefault("");
+
+        possibleitems.add(new ItemStack(Material.DIAMOND_HELMET));
+        getConfig().set("items", possibleitems);
+        ArrayList<ItemStack> item1 = (ArrayList<ItemStack>) getConfig().get("items");
+        item1.toArray(new ItemStack[0]);
+        item1.add(new ItemStack(Material.DIAMOND_SWORD));
+        possibleitems = item1;
+
+
+        JDABuilder builder = JDABuilder.createDefault("no");
         try {
-            jda = builder.build();
+            jda = builder.
+             addEventListeners(new whitelist(this))
+        .build();
         } catch (LoginException e) {
             e.printStackTrace();
         }
@@ -77,44 +103,14 @@ public final class FivooAnarchy extends JavaPlugin {
         getCommand("toggleloot").setExecutor(new LootChests(this));
         getCommand("togglepvp").setExecutor(new togglepvp(this));
         getCommand("spawnloot").setExecutor(new SpawnLootChest(this));
+        getCommand("gui").setExecutor(new GUIRotor(this));
         getServer().getPluginManager().registerEvents(new ChestOpen(this), this);
         getServer().getPluginManager().registerEvents(new togglepvp(this), this);
         getServer().getPluginManager().registerEvents(new SpawnLootChest(this), this);
+        getServer().getPluginManager().registerEvents(new GUIRotor(this), this);
         System.out.println("hi");
         TeleportUtils teleport = new TeleportUtils(this);
         this.saveDefaultConfig();
-
-
-        ArrayList<ItemStack> possibleitems = new ArrayList<>();
-
-        ItemStack leggings = new ItemStack(Material.DIAMOND_BOOTS);
-        leggings.addEnchantment(Enchantment.PROTECTION_FALL, 3);
-
-        ItemStack leggings1 = new ItemStack(Material.DIAMOND_CHESTPLATE);
-        leggings1.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
-
-        ItemStack leggings2 = new ItemStack(Material.DIAMOND_SWORD);
-        leggings2.addEnchantment(Enchantment.FIRE_ASPECT, 1);
-
-        ItemStack leggings3 = new ItemStack(Material.DIAMOND_HELMET);
-        leggings3.addEnchantment(Enchantment.WATER_WORKER, 1);
-
-        possibleitems.add(leggings);
-        possibleitems.add(leggings1);
-        possibleitems.add(leggings2);
-        possibleitems.add(leggings3);
-
-        // loop to print elements at randonm
-        for (int i = 0; i < possibleitems.size(); i++) {
-            // generating the index using Math.random()
-            int index = (int) (Math.random() * possibleitems.size());
-            currentitem = possibleitems.get(index);
-            break;
-
-
-
-        }
-
 
     }
 
@@ -150,6 +146,7 @@ public final class FivooAnarchy extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-
+        getConfig().set("items", possibleitems);
+        saveConfig();
     }
 }

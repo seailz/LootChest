@@ -18,3 +18,5 @@ commands:
   setitem:
     description: Sets an item!
     aliases: [si]
+  gui:
+    description: change the rotor
